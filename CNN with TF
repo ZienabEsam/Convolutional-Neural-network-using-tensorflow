@@ -1,0 +1,92 @@
+import tensorflow as tf
+import matplotlib.pyplot as plot
+from tensorflow.keras.datasets import cifar10
+
+#classes names
+classes =  ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
+
+#loading the datasets, 
+#these datasets are used as benchmark
+(x_train,y_train),(x_test,y_test) = cifar10.load_data()
+
+# Image normalization
+
+x_train = x_train/255
+y_train = y_train/255
+
+
+X_test = x_test /255
+
+
+plot.imshow(x_test[20])
+
+#defining the model
+model = tf.keras.models.Sequential()
+
+#to create the CNN we have the next parameters
+#CNN layer hyper-parameters:
+
+#filters: 32
+#kernel size aka size of filters:3
+#padding:same
+#activation:relu
+#input shape: (32, 32, 3)
+
+model.add(tf.keras.layers.Conv2D(filters=32, kernel_size = 3,
+                                 padding='same',activation ='relu',
+                                 input_shape=[32,32,3]))
+#2nd layer of CNN with parameters of 
+#filters: 32
+#kernel size:3
+#padding:same
+#activation:relu
+#pool_size: 2
+#strides: 2
+#padding: valid
+
+model.add(tf.keras.layers.Conv2D(filters=32, kernel_size=3, padding="same", activation="relu"))
+
+model.add(tf.keras.layers.MaxPool2D(pool_size=2, strides=2, padding='valid'))
+
+#adding 3rd layer of CNN with hyper paramerters of
+#filters: 64
+#kernel size:3
+#padding: same
+#activation: relu
+#input_shape: (32, 32, 3)
+
+model.add(tf.keras.layers.Conv2D(filters=64, kernel_size=3, padding="same", activation="relu"))
+
+#addinth 4th layer of CNN with hyper parameters of
+#filters: 64
+#kernel size:3
+#padding: same
+#activation: relu
+#pool_size: 2
+#strides: 2
+#padding: valid
+
+model.add(tf.keras.layers.Conv2D(filters=64, kernel_size=3, padding="same", activation="relu"))
+model.add(tf.keras.layers.MaxPool2D(pool_size=2, strides=2, padding='valid'))
+
+model.add(tf.keras.layers.Flatten())
+
+#dense layer && 2nd dense layer
+
+model.add(tf.keras.layers.Dense(units=128, activation='relu'))
+
+model.add(tf.keras.layers.Dense(units=10, activation='softmax'))
+
+#finaly summery of CNN
+
+model.summary()
+
+#compiling the model with adam optimizer
+model.compile(loss="sparse_categorical_crossentropy",
+              optimizer="Adam", metrics=["sparse_categorical_accuracy"])
+
+#training the model
+model.fit(x_train,y_train,epochs=5)
+#Model Evaluation
+test_loss, model_accuracy = model.evaluate(x_test, y_test)
+print("model accuracy: {}".format(model_accuracy))
