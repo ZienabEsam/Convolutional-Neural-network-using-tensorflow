@@ -7,7 +7,7 @@ CNN is used in solving computer vision problems:
 3.Neural style transfare
 4.Survalance
 5.REcommender system..etc
- #chalenges of CNN is when the input can get really big like an image with (1000*1000*3Million) then the weight matrix will be 
+ #chalenges of CNN is when the input can get really big like an image with (1000 X 1000 X 3Million) then the weight matrix will be 
  very big like (1000,3M) !!! and that is not acceptable
  
  For more about CNN an how to implement CNN using TensorFlow visit my blog
